@@ -1,0 +1,119 @@
+<div class="container "> 
+ 
+<a class="waves-effect waves-light btn-large btn-floating modal-trigger" (click)="openModalNew()"><i class="material-icons">add</i>Add </a>
+
+<div id="modal1" class="modal bottom-sheet" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
+  <div class="modal-content">
+
+
+<form novalidate [formGroup]="form">
+<div class="row">
+      <div class="col s12 m6 l3 input-field"> 
+        <input type="text" formControlName="issue" placeholder="issue" id="issue"><label for="issue">Issue</label>
+      </div>
+      <div class="col s12 m6 l3 input-field"> 
+        <input type="text" formControlName="description" placeholder="description" id="description"><label for="description">Description</label>
+      </div>
+      
+      <div class="col s12 m6 l3 input-field"> 
+         <input type="text" formControlName="dateOfIssue" class="datepicker" materialize="pickadate" [materializeParams]="[{selectMonths: true, selectYears: 15}]" placeholder="dateOfIssue" id="dateOfIssue"><label for="dateOfIssue">Date</label>
+      </div>
+       <div class="col s12 m6 l3 input-field"> 
+         <input type="text" formControlName="solution" placeholder="solution" id="solution"><label for="solution">Solution</label>
+      </div>
+      <div class="col s12 m6 l3 input-field"> 
+        <input type="text" formControlName="dateResolved" class="datepicker"  materialize="pickadate" [materializeParams]="[{selectMonths: true, selectYears: 15}]" placeholder="dateResolved" id="dateResolved"><label for="dateResolved">Date Resolved</label>
+      </div>
+
+<!--upload-->
+        <div class="input-field col s12 m6 l6">
+						<div class="file-field input-field">
+					      <div class="btn btn-small">
+					        <span>Browse</span>
+					        <input type="file" file-input="files" multiple (change)="onChange($event)">
+					      </div>
+					      <div class="file-path-wrapper">
+					        <input  class="file-path validate" type="text" placeholder="Upload one or more files" formControlName="fileList">
+					      </div>
+					       
+					       <div *ngIf="uploading">
+                    <div class="progress">
+                        <div class="indeterminate"></div>
+                    </div>
+                  </div> 
+					    </div>
+				</div>
+
+</div>
+  
+  
+ 
+  
+   <button *ngIf="updatesubmitflag" (click)="submitIssue()" class="btn waves-effect waves-light" type="submit" name="action">Submit
+    <i class="material-icons right">send</i>
+  </button>
+ 
+   <button *ngIf!="updatesubmitflag" (click)="updateForm()" class="btn waves-effect waves-light" type="submit" name="action">Update
+    <i class="material-icons right">send</i>
+  </button>
+
+</form>
+
+  </div>
+  <div class="modal-footer">
+
+
+    <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Done</a>
+   
+  </div>
+</div>
+
+
+
+      <table class="bordered highlight">
+            <thead>
+              <tr>               
+                 <th ></th>
+                  <th >Issue</th>
+                  <th >Description</th>                  
+                   <th >Date</th>
+                   <th >Solution</th>
+                  <th >Date Resolved</th>
+                  <th >Attachements</th>          
+                   <th >Added By</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let issue of issues | async">  
+                 <td><a href="javascript:void(0)" ><i (click)="deleteIssue(issue.$key)" class="material-icons">delete</i></a>
+                 <a href="javascript:void(0)" ><i (click)="updateIssue( issue, issue.$key)" class="material-icons">mode_edit</i></a></td>             
+                <td>{{issue.issue}}</td>
+                <td>{{issue.description}}</td>
+                 <td>{{issue.dateOfIssue}}</td>
+                   <td>{{issue.solution}}</td>
+                <td>{{issue.dateResolved}}</td>
+                <td>
+                  <ul class="collection">
+                    <li *ngFor="let a of issue.attachments;  let i = index" [attr.data-index]="i" class="collection-item">  
+                     
+                     <span *ngIf="a.fileName.includes('jpg') || a.fileName.includes('png')  ">   <img class="materialboxed" width="100" src="{{a.url}}" > </span>
+                   <!-- <span *ngIf="!a.fileName.includes('jpg') && !a.fileName.includes('png')">  <a href="{{a.url}}" target="_blank">{{a.fileName}}</a><a (click)="deleteAttachment(issue.$key,issue, a, i)" href="javascript:void(0)" ><i class="tiny material-icons">delete</i></a></span>-->
+
+                           <a href="{{a.url}}" target="_blank">{{a.fileName}}</a>  <a (click)="deleteAttachment(issue.$key,issue, a, i)" href="javascript:void(0)" ><i class="tiny material-icons">delete</i></a>
+
+                      </li>
+                  </ul>
+                  
+                  
+                  </td>        
+                <td> <img src="{{issue.SubmittedByPhotoUrl}}" alt="" class="circle responsive-img"> 
+                 {{issue.SubmittedBy}} <br /> 
+                 <span style="color: gray; font-size: 0.8em;">{{issue.timestamp | date}}</span></td>                
+              </tr>              
+            </tbody>
+          </table>
+
+
+
+  </div>

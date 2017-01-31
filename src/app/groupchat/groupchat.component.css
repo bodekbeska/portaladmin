@@ -1,0 +1,16 @@
+.circle{
+    height: 55px;
+}
+
+.smaller-circle{
+    height: 20px;
+}
+.card-panel {  
+    padding: 5px;
+}
+.row {
+    margin-left: auto; 
+     margin-right: auto; 
+     margin-bottom: 0px; 
+     margin-left: 0rem; 
+}

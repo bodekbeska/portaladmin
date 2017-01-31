@@ -1,0 +1,147 @@
+<div class="container "> 
+
+
+
+
+
+<!-- Modal Structure -->
+<div id="modal1" class="modal bottom-sheet" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
+  <div class="modal-content">
+    
+    <h4 *ngIf="updatesubmitflag">Enter New Item</h4><h4 *ngIf!="updatesubmitflag">Update Item</h4>
+    
+<form novalidate #f="ngForm" >
+  <div class="row">
+      <div class="col s12 m6 l3 input-field"> 
+          <input type="text" name="PortletID" [(ngModel)]="newItem.PortletID" class="validate" id="PortletID"> <label for="PortletID">Portlet ID</label>
+      </div>
+      <div class="col s12 m6 l3 input-field">
+         <input type="text" name="PortletName" [(ngModel)]="newItem.PortletName" class="validate" id="PortletName"><label for="PortletName">Portlet Name</label>
+      </div>
+      <div class="col s12 m6 l3 input-field">
+         <input type="text" name="PortletDescription" [(ngModel)]="newItem.PortletDescription" class="validate" id="PortletDescription"><label for="PortletDescription">Portlet Description</label>
+        </div>
+      <div class="col s12 m6 l3 input-field">
+         <input type="text" name="TargetPopulation" [(ngModel)]="newItem.TargetPopulation" class="validate" id="TargetPopulation"><label for="TargetPopulation">Target Population</label>
+      </div>
+      <div class="col s12 m6 l3 input-field">
+         <input type="text" name="BusinessOwner" [(ngModel)]="newItem.BusinessOwner" class="validate" id="BusinessOwner"><label for="BusinessOwner">Business Owner</label>
+      </div>
+      <div class="col s12 m6 l3 input-field">
+         <input type="date" materialize="pickadate" [materializeParams]="[{selectMonths: true, selectYears: 15}]" name="GoLiveDate" [(ngModel)]="newItem.GoLiveDate" class="datepicker" id="GoLiveDate"><label for="GoLiveDate">GoLive Date</label>
+      </div>
+      <div class="col s12 m6 l3 input-field">
+         <input type="text"  materialize="pickadate" [materializeParams]="[{selectMonths: true, selectYears: 15}]" name="CloseDate" [(ngModel)]="newItem.CloseDate" class="datepicker" id="CloseDate"><label for="CloseDate">Close Date</label>
+      </div>
+      <div class="col s12 m6 l3 input-field">
+         <input type="text" name="Status" [(ngModel)]="newItem.Status" class="validate" id="Status"><label for="Status">Status</label>
+      </div>
+      <div class="col s12 m6 l3 input-field">
+         <input type="text" name="Portal" [(ngModel)]="newItem.Portal" class="validate" id="Portal"><label for="Portal">Portal</label>
+      </div>
+      <div class="col s12 m6 l3 input-field">
+         <input type="text" name="TabName" [(ngModel)]="newItem.TabName" class="validate" id="TabName"><label for="TabName">Tab Name</label>
+      </div>
+      <div class="col s12 m6 l3 input-field">
+         <input type="text" name="PageName" [(ngModel)]="newItem.PageName" class="validate" id="PageName"><label for="PageName">Page Name</label>
+      </div>
+      <div class="col s12 m6 l3 input-field">
+         <input type="text" name="DataSource" [(ngModel)]="newItem.DataSource" class="validate" id="DataSource"><label for="DataSource">Data Source</label>
+      </div>
+    </div>
+  
+
+  <button *ngIf="updatesubmitflag" (click)="submitForm()" class="btn waves-effect waves-light" type="submit" name="action">Submit
+    <i class="material-icons right">send</i>
+  </button>
+ 
+   <button *ngIf!="updatesubmitflag" (click)="updateForm()" class="btn waves-effect waves-light" type="submit" name="action">Update
+    <i class="material-icons right">send</i>
+  </button>
+
+</form>
+
+
+  </div>
+  <div class="modal-footer">
+    <a class="waves-effect waves-green btn-flat" (click)="closeModal() ">Done</a>
+   
+  </div>
+</div>
+
+
+
+
+
+ <div class="row">
+   <div class="col s1">
+     <a class="waves-effect waves-light btn-large btn-floating modal-trigger" (click)="openModalAddNewItem()"><i class="material-icons">add</i>Add </a> 
+   </div>
+    <div class="input-field col s5">
+      <input id="first_name2" type="text" class="validate"   [(ngModel)]="listFilter">
+      <label class="active" for="first_name2">Filter</label>
+    </div>
+      <div class="input-field col s3">
+           <!--
+            <select materialize="material_select"  [materializeSelectOptions]="selectOptions"  [(ngModel)]="statusSelect">             
+              <option *ngFor="let option of status" [ngValue]="option" >{{option}}</option>
+            </select>
+            -->
+             <select   [(ngModel)]="statusSelect">   <option selected="selected" disabled>Select Status</option>           
+              <option *ngFor="let option of status" [ngValue]="option" >{{option}}</option>
+            </select>
+            
+    </div>
+      <div class="input-field col s3">
+           
+ 
+            
+    </div>
+  </div>
+
+      <table class="bordered highlight">
+            <thead>
+              <tr>               
+                 <th ></th>
+                  <th >Portlet Name</th>
+                  <th >Description</th>
+                  <th >Target Population</th>
+                  <th >Business Owner</th>
+                  <th >Go Live Date</th>
+                  <th >Close Date</th>
+                  <th >Status</th>
+                  <th >Portal</th>
+                  <th >Tab Name</th>
+                  <th >Page Name</th>
+                  <th >Data Source</th>
+                   <th >Added By</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let item of itemsForView | filter:listFilter | statusfilter: statusSelect">  
+                 <td>
+                  <a href="javascript:void(0)" ><i (click)="deleteItem(item.$key)" class="material-icons">delete</i></a> 
+                  <a href="javascript:void(0)" > <i (click)="updateItem(item.$key, item)" class="material-icons">mode_edit</i></a> 
+                 </td>             
+                <td>{{item.PortletName}} <br /> <span style="color: gray; font-size: 0.8em;">ID: {{item.PortletID}}</span></td>
+                <td>{{item.PortletDescription}}</td>
+                 <td>{{item.TargetPopulation}}</td>
+                <td>{{item.BusinessOwner}}</td>
+                <td>{{item.GoLiveDate}}</td>
+                <td>{{item.CloseDate}}</td>
+                <td>{{item.Status}}</td>
+                <td>{{item.Portal}}</td>
+                 <td>{{item.TabName}}</td>
+                <td>{{item.PageName}}</td>
+                <td>{{item.DataSource}}</td>
+                <td>{{item.SubmittedBy}} <br /> <span style="color: gray; font-size: 0.8em;">{{item.SubmittedDate | date}}</span></td>                
+              </tr>              
+            </tbody>
+          </table>
+
+
+
+ </div>
+
+

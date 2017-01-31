@@ -1,0 +1,31 @@
+   <nav >
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">{{title}}</a>       
+      <ul *ngIf="loginservice.isAuthenticated" id="nav-mobile" class="right hide-on-med-and-down">    
+        <li><a href="#" routerLink="/">Portal Items</a></li>
+        <li><a href="#" routerLink="/issue">Portal Issues Log</a></li>  
+         <li><a href="#" routerLink="/chat">Group Chat</a></li>  
+        <li >          
+            <img [src]="loginservice.photoUrl" alt="" class="circle responsive-img"> 
+          </li>       
+       <!-- <li ><a (click)="loginservice.logout()" href="#">Log Out</a></li>-->
+      </ul>
+
+     <ul *ngIf="!loginservice.isAuthenticated" id="nav-mobile" class="right hide-on-med-and-down">    
+       <li ><a  (click)="loginservice.login()" href="#">Log In</a></li>
+      </ul>
+
+
+
+
+    </div>
+  </nav>
+
+  
+
+ 
+
+<div *ngIf="loginservice.isAuthenticated" >
+  Welcome  {{ loginservice.displayName }}
+
+</div>

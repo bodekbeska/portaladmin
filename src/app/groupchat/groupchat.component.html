@@ -1,0 +1,76 @@
+  <div class="container">
+
+<form (keydown)="submitMessage($event)">
+<input type="text" name="chat" [(ngModel)]="chat" placeholder="enter message here">
+</form>
+
+  <div class="col s12 m8 offset-m2 l6 offset-l3">
+        
+        
+        <div class="card-panel grey lighten-5 z-depth-1" *ngFor="let message of messages | async">
+          <div class="row valign-wrapper">
+            <div class="col s1">
+              <img src="{{message.userPhotoUrl}}" alt="" class="circle responsive-img"> 
+            </div>
+          
+            <div class="col s6">
+              <span class="black-text">
+               {{message.message}}<br/>
+               <span style="color: dimgray; font-size: 0.8em;">{{message.timestamp | date:'medium'}} </span>
+              </span>
+            </div>
+
+            <div class="col s1" >
+              <span class="black-text">
+                 <a  *ngIf="message.user==loginservice.displayName" (click)="deleteMessage(message.$key)">
+                 <i class="material-icons">delete_forever</i></a>               
+                </span>
+            </div>
+
+
+              
+        <div class="col s3" >
+              <form (keydown)="submitReplies($event, message)">
+                <input type="text" #{{message.$key}} name="reply" placeholder="enter reply here">
+              </form>
+        </div>
+
+               
+        <div class="col s1" >
+              		<div class="file-field input-field">         
+					        <span><i class="material-icons">picture_in_picture</i></span>
+					        <input type="file" file-input="files" multiple (change)="onChange($event, message)">
+					         </div>
+        </div>
+
+          </div>
+
+      
+
+            <div class="row">
+               <div class="col s2"></div>
+                <div class="col s8">
+                  <ul class="collection">
+                    
+                      <li *ngFor="let r of message.replies"  class="collection-item">
+                        <img src="{{r.userPhotoUrl}}" alt="" class="circle responsive-img smaller-circle"> 
+                                       
+                      
+                    <span style="font-size: 0.7em; color: darkgray;" *ngIf="(r.timestamp | date)===(today | date)" >{{r.timestamp | date :'shortTime'}}</span> 
+                     <span style="font-size: 0.7em; color: darkgray;"  *ngIf="(r.timestamp | date)!=(today | date)" >{{r.timestamp | date:'medium'}}</span> 
+
+                    <span style="font-size: 0.9em;" *ngIf="r.photoURL==='n/a' || !r.photoURL || r.photoURL===null || r.photoURL===undefined"> {{r.message }} </span>  
+                     <span *ngIf="r.photoURL!='n/a'">  <img class="materialboxed" width="200" src="{{r.photoURL}}" ></span>  
+                    
+                    </li>
+                    </ul>
+                  </div>
+                  <div class="col s2"></div>
+            </div>
+
+
+        </div>
+
+      </div>
+</div>
+  
